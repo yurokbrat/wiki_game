@@ -5,18 +5,13 @@
 {% block title %}
   Пользователь: {{ object.username }}
 {% endblock title %}
-
 {% block content %}
   <div class="container">
     <div class="row">
       <div class="col-sm-12">
         <h2>{{ object.username }}</h2>
-        {% if object.name %}
-          <p>Имя: {{ object.name }}</p>
-        {% endif %}
-        {% if object.email %}
-          <p>Электронная почта: {{ object.email }}</p>
-        {% endif %}
+        {% if object.name %}<p>Имя: {{ object.name }}</p>{% endif %}
+        {% if object.email %}<p>Электронная почта: {{ object.email }}</p>{% endif %}
         {% if object.date_joined %}
           <p>Дата регистрации: {{ object.date_joined|date:"d.m.Y" }}</p>
         {% endif %}
@@ -26,16 +21,20 @@
       <div class="row">
         <div class="col-sm-12">
           <a class="btn btn-primary" href="{% url 'users:update' %}" role="button">Моя информация</a>
-          <a class="btn btn-primary" href="{% url 'account_email' %}" role="button">Управление электронной почтой</a>
+          <a class="btn btn-primary"
+             href="{% url 'account_email' %}"
+             role="button">Управление электронной почтой</a>
           <a class="btn btn-primary" href="{% url 'mfa_index' %}" role="button">Настройки MFA</a>
         </div>
       </div>
       {% if object.rating %}
-        <br>
+        <br />
         <h3>Последние игры</h3>
         <ul class="recent-games">
           {% for game in recent_games %}
-            <li>{{ game.start_article }} -> {{ game.end_article }} (Время: {{ game.time_taken }})</li>
+            <li>
+              {{ game.start_article }} -> {{ game.end_article }} (Время: {{ game.time_taken }})
+            </li>
           {% endfor %}
         </ul>
       {% endif %}

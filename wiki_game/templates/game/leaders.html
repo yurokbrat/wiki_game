@@ -5,28 +5,30 @@
     <h2 class="title">Таблица лидеров</h2>
     <table class="leaderboard-table">
       <thead>
-      <tr>
-        <th>Место</th>
-        <th>Пользователь</th>
-        <th>Рейтинг</th>
-      </tr>
+        <tr>
+          <th>Место</th>
+          <th>Пользователь</th>
+          <th>Рейтинг</th>
+        </tr>
       </thead>
       <tbody>
-      {% for user in leaders %}
-        <tr>
-          <td>{{ forloop.counter }}</td>
-          <td><a href={% url 'users:detail' user.username %}> {{ user.username }} </a></td>
-          <td>{{ user.rating }}</td>
-        </tr>
-      {% empty %}
-        <tr>
-          <td colspan="3">Пока что рейтинг пуст. Стань лидером прямо сейчас!</td>
-        </tr>
-      {% endfor %}
+        {% for user in leaders %}
+          <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>
+              <a href={% url 'users:detail' user.username %}>{{ user.username }}</a>
+            </td>
+            <td>{{ user.rating }}</td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="3">Пока что рейтинг пуст. Стань лидером прямо сейчас!</td>
+          </tr>
+        {% endfor %}
       </tbody>
     </table>
   </div>
   <div class="actions">
     <a href="{% url 'game:start' %}" class="btn btn-primary">Начать новую игру</a>
   </div>
-{% endblock %}
+{% endblock content %}

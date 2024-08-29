@@ -1,5 +1,5 @@
 import re
-from typing import Any, Dict
+from typing import Any
 
 import wikipediaapi
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -9,7 +9,6 @@ from django.shortcuts import redirect, render
 from django.utils import timezone
 from django.utils.html import escape
 from django.views.generic import FormView, TemplateView, View
-from requests import Request
 
 from wiki_game.game.forms import StartGameForm
 from wiki_game.game.models import GameResult
@@ -43,7 +42,11 @@ class GameView(LoginRequiredMixin, View):
 
         return self.handle_article_view(game_result, article)
 
-    def handle_game_completion(self, game_result: GameResult, request: ASGIRequest) -> HttpResponse:
+    def handle_game_completion(
+        self,
+        game_result: GameResult,
+        request: ASGIRequest,
+    ) -> HttpResponse:
         base_points = 10
         optimal_path_length = 5
         actual_path_length = len(game_result.path.split(" -> "))
@@ -95,7 +98,11 @@ class GameView(LoginRequiredMixin, View):
             },
         )
 
-    def handle_article_view(self, game_result: GameResult, article: str) -> HttpResponse:
+    def handle_article_view(
+        self,
+        game_result: GameResult,
+        article: str,
+    ) -> HttpResponse:
         page = wiki_html.page(article)
         content = page.text
         links = page.links

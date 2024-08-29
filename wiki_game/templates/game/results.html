@@ -3,33 +3,47 @@
 {% block content %}
   <h2 class="title">Результаты игры</h2>
   <div class="results-box">
-    <p><strong>Начальное слово:</strong> {{ start_article }}</p>
-    <p><strong>Финальное слово:</strong> {{ end_article }}</p>
-    <p><strong>Времени затрачено:</strong> {{ time_taken }}</p>
-    <p><strong>Путь к победе:</strong> {{ path }}</p>
+    <p>
+      <strong>Начальное слово:</strong> {{ start_article }}
+    </p>
+    <p>
+      <strong>Финальное слово:</strong> {{ end_article }}
+    </p>
+    <p>
+      <strong>Времени затрачено:</strong> {{ time_taken }}
+    </p>
+    <p>
+      <strong>Путь к победе:</strong> {{ path }}
+    </p>
   </div>
-
   {% if user_rating %}
     <div class="rating-breakdown">
-      <p class="rating"><strong>Рейтинг:</strong> {{ user_rating }} <span
-        class="rating-obtain">+ {{ rating_obtain }}</span></p>
-      <p><strong>Основные очки:</strong> {{ base_points }}</p>
-      <p><strong>Бонус за путь:</strong> {{ path_bonus }} (Длина пути: {{ actual_path_length }} шагов)</p>
-      <p><strong>Бонус за время:</strong> {{ time_bonus }} (Затраченное время: {{ time_taken }})</p>
+      <p class="rating">
+        <strong>Рейтинг:</strong> {{ user_rating }} <span class="rating-obtain">+ {{ rating_obtain }}</span>
+      </p>
+      <p>
+        <strong>Основные очки:</strong> {{ base_points }}
+      </p>
+      <p>
+        <strong>Бонус за путь:</strong> {{ path_bonus }} (Длина пути: {{ actual_path_length }} шагов)
+      </p>
+      <p>
+        <strong>Бонус за время:</strong> {{ time_bonus }} (Затраченное время: {{ time_taken }})
+      </p>
     </div>
   {% endif %}
-
   {% if recent_games %}
-    <br>
+    <br />
     <h3>Последние игры</h3>
     <ul class="recent-games">
       {% for game in recent_games %}
-        <li>{{ game.start_article }} -> {{ game.end_article }} (Время: {{ game.time_taken }})</li>
+        <li>
+          {{ game.start_article }} -> {{ game.end_article }} (Время: {{ game.time_taken }})
+        </li>
       {% endfor %}
     </ul>
   {% endif %}
-
   <form action="{% url 'game:start' %}" method="get" class="new-game-form">
     <button type="submit" class="btn">Новая игра</button>
   </form>
-{% endblock %}
+{% endblock content %}
