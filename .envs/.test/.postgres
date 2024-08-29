@@ -1,0 +1,7 @@
+# PostgreSQL
+# ------------------------------------------------------------------------------
+POSTGRES_HOST=postgres_wiki_test
+POSTGRES_PORT=5432
+POSTGRES_DB=wiki_game
+POSTGRES_USER=EKIxQKhPstWrtlysBUuFBvCDRiyDLEvp
+POSTGRES_PASSWORD=ekDaS1EH5GfJAgEg8qcyJWtuSdyCNmvQDoKGyEWoFImbwZ1eKX5bgk1APIrOun62

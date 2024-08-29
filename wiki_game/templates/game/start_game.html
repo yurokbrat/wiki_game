@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <form method="post" class="game-form">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="start_article">Начальное слово:</label>
+      <input type="text" id="start_article" name="start_article" required>
+    </div>
+    <div class="form-group">
+      <label for="end_article">Финальное слово:</label>
+      <input type="text" id="end_article" name="end_article" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Начать игру!</button>
+  </form>
+{% endblock %}

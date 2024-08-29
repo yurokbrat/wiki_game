@@ -1,0 +1,71 @@
+volumes:
+  postgres_wiki_local_data: {}
+  postgres_wiki_local_data_backups: {}
+  redis_wiki_local_data: {}
+
+services:
+  django_wiki_local: &django_wiki_local
+    build:
+      context: .
+      dockerfile: ./compose/local/django/Dockerfile
+    image: django_wiki_local
+    container_name: django_wiki_local
+    depends_on:
+      - postgres_wiki_local
+      - redis_wiki_local
+    volumes:
+      - .:/app:z
+    env_file:
+      - ./.envs/.local/.django
+      - ./.envs/.local/.postgres
+    ports:
+      - '8000:8000'
+    command: /start
+
+  postgres_wiki_local:
+    build:
+      context: .
+      dockerfile: ./compose/production/postgres/Dockerfile
+    image: postgres_wiki_local
+    container_name: postgres_wiki_local
+    volumes:
+      - postgres_wiki_local_data:/var/lib/postgresql/data
+      - postgres_wiki_local_data_backups:/backups
+    env_file:
+      - ./.envs/.local/.postgres
+
+  redis_wiki_local:
+    image: docker.io/redis:6
+    container_name: redis_wiki_local
+
+    volumes:
+      - redis_wiki_local_data:/data
+
+
+  celeryworker_wiki_local:
+    <<: *django_wiki_local
+    image: celeryworker_wiki_local
+    container_name: celeryworker_wiki_local
+    depends_on:
+      - redis_wiki_local
+      - postgres_wiki_local
+    ports: []
+    command: /start-celeryworker
+
+  celerybeat_wiki_local:
+    <<: *django_wiki_local
+    image: celerybeat_wiki_local
+    container_name: celerybeat_wiki_local
+    depends_on:
+      - redis_wiki_local
+      - postgres_wiki_local
+    ports: []
+    command: /start-celerybeat
+
+  flower_wiki_local:
+    <<: *django_wiki_local
+    image: flower_wiki_local
+    container_name: flower_wiki_local
+    ports:
+      - '5555:5555'
+    command: /start-flower
