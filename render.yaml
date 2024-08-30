@@ -3,6 +3,5 @@ services:
     name: wiki_game
     env: docker
     buildCommand: "docker-compose -f docker-compose.local.yml build"
-    startCommand: "docker-compose -f docker-compose.local.yml up"
     plan: free
     region: us-east
