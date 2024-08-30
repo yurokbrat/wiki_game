@@ -1,0 +1,64 @@
+version: '3.8'
+
+volumes:
+  postgres_wiki_prod_data: {}
+  redis_wiki_prod_data: {}
+
+services:
+  django_wiki_prod: &django_wiki_prod
+    build:
+      context: .
+      dockerfile: ./compose/production/django/Dockerfile
+    image: django_wiki_prod
+    container_name: django_wiki_prod
+    depends_on:
+      - postgres_wiki_prod
+      - redis_wiki_prod
+    env_file:
+      - ./.envs/.local/.django
+      - ./.envs/.local/.postgres
+    ports:
+      - '8000:8000'
+    command: /start
+
+  postgres_wiki_prod:
+    image: postgres:13
+    container_name: postgres_wiki_prod
+    volumes:
+      - postgres_wiki_prod_data:/var/lib/postgresql/data
+    env_file:
+      - ./.envs/.local/.postgres
+
+  redis_wiki_prod:
+    image: redis:6
+    container_name: redis_wiki_prod
+    volumes:
+      - redis_wiki_prod_data:/data
+
+  celeryworker_wiki_prod:
+    <<: *django_wiki_prod
+    image: celeryworker_wiki_prod
+    container_name: celeryworker_wiki_prod
+    depends_on:
+      - redis_wiki_prod
+      - postgres_wiki_prod
+    ports: []
+    command: /start-celeryworker
+
+  celerybeat_wiki_prod:
+    <<: *django_wiki_prod
+    image: celerybeat_wiki_prod
+    container_name: celerybeat_wiki_prod
+    depends_on:
+      - redis_wiki_prod
+      - postgres_wiki_prod
+    ports: []
+    command: /start-celerybeat
+
+  flower_wiki_prod:
+    <<: *django_wiki_prod
+    image: flower_wiki_prod
+    container_name: flower_wiki_prod
+    ports:
+      - '5555:5555'
+    command: /start-flower
