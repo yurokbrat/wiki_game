@@ -16,7 +16,11 @@ services:
         fromDatabase:
           name: wiki_game
           property: connectionString
+      - key: CELERY_BROKER_URL
+        value: redis://red-cr8nrc5svqrc739d3ib0:6379/0
       - key: SECRET_KEY
         generateValue: true
       - key: WEB_CONCURRENCY
         value: 4
+      - key: REDIS_URL
+        value: redis://red-cr8nrc5svqrc739d3ib0:6379/0
