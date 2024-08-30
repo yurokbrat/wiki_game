@@ -1,7 +1,22 @@
+databases:
+  - name: wiki_game
+    plan: free
+    databaseName: wiki_game
+    user: wiki_game
+
 services:
   - type: web
-    name: wiki_game
-    env: docker
-    buildCommand: "docker-compose -f docker-compose.local.yml build"
     plan: free
-    region: us-east
+    name: wiki_game
+    runtime: python
+    buildCommand: "./build.sh"
+    startCommand: "python -m gunicorn wiki_game.asgi:application -k uvicorn.workers.UvicornWorker"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: wiki_game
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: WEB_CONCURRENCY
+        value: 4
